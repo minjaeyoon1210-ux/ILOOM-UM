@@ -720,7 +720,7 @@ html, body {
   transition: opacity 0.3s, filter 0.3s;
 }
 .compare-card-photo {
-  height: 152px;
+  height: 128px;
   background: var(--warm-bg);
   position: relative;
 }
@@ -748,7 +748,7 @@ html, body {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .compare-card-body {
-  padding: 20px 26px 22px;
+  padding: 16px 26px 16px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -761,19 +761,19 @@ html, body {
   margin-bottom: 4px;
 }
 .compare-card-name {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.025em;
-  margin-bottom: 12px;
-  line-height: 1.25;
+  margin-bottom: 8px;
+  line-height: 1.2;
 }
 .compare-card-price {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.02em;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 .compare-card-price .price-sub {
   font-size: 16px;
@@ -793,19 +793,19 @@ html, body {
 /* 비교 카드 안 특징 리스트 (소재·모터·디자인·매칭) */
 .compare-card-specs {
   list-style: none;
-  margin-top: 10px;
+  margin-top: 8px;
   border-top: 1px solid var(--line);
-  padding-top: 10px;
+  padding-top: 6px;
 }
 .compare-card-specs li {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  padding: 6px 0;
-  font-size: 18px;
+  padding: 4px 0;
+  font-size: 17px;
   font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.4;
+  line-height: 1.35;
   border-bottom: 1px dashed var(--line);
 }
 .compare-card-specs li:last-child { border-bottom: none; }
@@ -833,8 +833,8 @@ html, body {
   font-weight: 700;
 }
 .compare-card.ours .compare-card-specs li {
-  font-size: 18px;
-  padding: 5px 0;
+  font-size: 17px;
+  padding: 4px 0;
 }
 
 /* 일룸 카드 — ORIGINAL 강조 */
@@ -849,7 +849,7 @@ html, body {
   z-index: 2;
 }
 .compare-card.ours .compare-card-photo {
-  height: 162px;
+  height: 138px;
 }
 .compare-card.ours .compare-card-brand {
   color: var(--hot);
@@ -1018,8 +1018,27 @@ html, body {
   min-width: 86px;
   text-align: center;
   font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 6px 4px;
+  transition: background 0.2s;
 }
+.nav-pagenum:hover { background: rgba(192,87,60,0.10); }
 .nav-pagenum .total { color: var(--ink-mute); font-weight: 500; }
+.nav-pagenum-input {
+  width: 54px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--hot);
+  text-align: center;
+  border: 2px solid var(--hot);
+  border-radius: 9px;
+  background: #fff;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  padding: 3px 0;
+  font-family: inherit;
+}
 .nav-btn {
   background: transparent;
   border: 1.5px solid var(--line);
@@ -1556,9 +1575,9 @@ html, body {
                 <li><span class="k">블루투스 앱</span><span class="v">리시버 별매(25,000원)</span></li>
                 <li class="clickable" onclick="event.stopPropagation(); openDetail('livart');"><span class="k">전선 정리</span><span class="v detail-trigger">테이블 밑 노출</span></li>
                 <li class="clickable" onclick="event.stopPropagation(); openDetail('livartOutlet');"><span class="k">콘센트</span><span class="v detail-trigger">매립형 1구+C포트2<span class="v-note">1구는 전원선 점유 · 고속충전 C포트</span></span></li>
-                <li><span class="k">다리 사이</span><span class="v">표기 미확인</span></li>
+                <li><span class="k">다리 사이</span><span class="v">발판 없음 · 자유</span></li>
                 <li><span class="k">의자 매칭</span><span class="v">개별 참고</span></li>
-                <li><span class="k">상판</span><span class="v">LPM·세라믹</span></li>
+                <li><span class="k">상판</span><span class="v">LPM+MDF · 세라믹</span></li>
                 <li><span class="k">기본 안전기능</span><span class="v">표기 미확인</span></li>
               </ul>
             </div>
@@ -1580,7 +1599,7 @@ html, body {
       <div class="nav-brand">iloom <span class="accent">UPMOTION</span></div>
       <div class="nav-progress" id="navProgress"></div>
       <div class="nav-status" id="navStatus">자동 재생</div>
-      <div class="nav-pagenum" id="navPageNum">01 / 08</div>
+      <div class="nav-pagenum" id="navPageNum" onclick="event.stopPropagation(); promptGoto();" title="번호를 눌러 페이지 이동">01 / 08</div>
       <button class="nav-btn" id="navPrev" onclick="prevSlide()">◀ 이전</button>
       <button class="nav-btn nav-pause" id="navPause" onclick="event.stopPropagation(); togglePause(); resetAttract();"><span class="ic">⏸</span> 일시정지</button>
       <button class="nav-btn" id="navNext" onclick="nextSlide()">다음 ▶</button>
@@ -1665,8 +1684,37 @@ function updateNavbar() {
   document.getElementById('navNext').disabled = curSlide === SLIDE_COUNT - 1;
   document.getElementById('navStatus').textContent = isPaused ? '일시정지' : '자동 재생';
   const pad = n => String(n).padStart(2, '0');
-  document.getElementById('navPageNum').innerHTML =
-    pad(curSlide + 1) + ' <span class="total">/ ' + pad(SLIDE_COUNT) + '</span>';
+  if (!pageInputOpen) {
+    document.getElementById('navPageNum').innerHTML =
+      pad(curSlide + 1) + ' <span class="total">/ ' + pad(SLIDE_COUNT) + '</span>';
+  }
+}
+
+/* 페이지 번호 클릭 → 숫자 입력 → 해당 페이지 이동 */
+let pageInputOpen = false;
+function promptGoto() {
+  if (pageInputOpen) return;
+  pageInputOpen = true;
+  if (!isPaused) pauseShow();          // 입력 중 자동전환 멈춤
+  const el = document.getElementById('navPageNum');
+  el.innerHTML = '<input class="nav-pagenum-input" id="pageInput" type="text" inputmode="numeric" '
+    + 'placeholder="1-' + SLIDE_COUNT + '" maxlength="2"> <span class="total">/ '
+    + String(SLIDE_COUNT).padStart(2,'0') + '</span>';
+  const inp = document.getElementById('pageInput');
+  inp.focus();
+  const commit = () => {
+    const n = parseInt(inp.value, 10);
+    pageInputOpen = false;
+    if (!isNaN(n) && n >= 1 && n <= SLIDE_COUNT) setActive(n - 1);
+    else updateNavbar();
+    resetAttract();
+  };
+  inp.addEventListener('keydown', (e) => {
+    e.stopPropagation();
+    if (e.key === 'Enter') commit();
+    else if (e.key === 'Escape') { pageInputOpen = false; updateNavbar(); }
+  });
+  inp.addEventListener('blur', () => { if (pageInputOpen) commit(); });
 }
 
 function setActive(idx) {
