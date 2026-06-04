@@ -1530,9 +1530,9 @@ html, body {
               <div class="compare-card-price">1,040,000원~<span class="price-sub">목재</span></div>
               <ul class="compare-card-specs">
                 <li><span class="k">모터</span><span class="v">듀얼 제창 모터</span></li>
-                <li><span class="k">하중</span><span class="v">수치 비공개(2배 강화)</span></li>
+                <li class="clickable" onclick="event.stopPropagation(); openDetail('hanssemLoad');"><span class="k">하중</span><span class="v detail-trigger">60kg<span class="v-note">제한하중 · 그 이상 비권장</span></span></li>
                 <li><span class="k">블루투스 앱</span><span class="v">미언급</span></li>
-                <li class="clickable" onclick="event.stopPropagation(); openDetail('hanssem');"><span class="k">전선 정리</span><span class="v detail-trigger">매립형<span class="v-note">분리 시 육각렌치로 커버 열고 재조립</span></span></li>
+                <li class="clickable" onclick="event.stopPropagation(); openDetail('hanssem');"><span class="k">전선 정리</span><span class="v detail-trigger">노출 · 별도 패드<span class="v-note">다리에 부착 패드로 정리(별도 제공)</span></span></li>
                 <li class="clickable" onclick="event.stopPropagation(); openDetail('hanssemOutlet');"><span class="k">콘센트</span><span class="v detail-trigger">없음<span class="v-note">테이블에 콘센트 자리 없음</span></span></li>
                 <li><span class="k">다리 사이</span><span class="v">발판 있음<span class="v-note">다리 뻗기 제약 · 반려동물 통행 불편</span></span></li>
                 <li><span class="k">의자 매칭</span><span class="v">개별 참고</span></li>
@@ -1807,6 +1807,16 @@ const DETAIL_DATA = {
     ],
     note: '※ 제품 상세 이미지에서 확인된 구성을 사실 위주로 정리했습니다.'
   },
+  hanssemLoad: {
+    eyebrow: 'A사 · 하중',
+    title: '제한하중이 60kg이에요',
+    list: [
+      '제한하중 <strong>60kg</strong> (별도 문의로 확인된 수치)',
+      '판매처에서도 <strong>"60kg까지 올리는 것도 권하지 않는다"</strong>는 안내',
+      '일룸 업모션은 <strong>100kg</strong> — 더 여유 있는 하중'
+    ],
+    note: '※ 공개된 사용 후기·문의 내용에서 확인된 내용을 사실 위주로 정리했습니다.'
+  },
   hanssemOutlet: {
     eyebrow: 'A사 · 콘센트',
     title: '테이블에 콘센트 자리가 없어요',
@@ -1819,14 +1829,14 @@ const DETAIL_DATA = {
   },
   hanssem: {
     eyebrow: 'A사 · 전선 정리',
-    title: '매립형이라, 전선 한 번 빼면 분해가 필요해요',
+    title: '전선이 노출돼, 별도 패드로 정리해요',
     list: [
-      '전선이 다리 <strong>내부 매립형</strong>으로 들어가는 구조',
-      '높이를 낮출 때 전선이 짧으면 <strong>다시 빼야</strong> 하는 경우가 생김',
-      '재연결하려면 <strong>육각렌치로 커버를 분리</strong>한 뒤 끼우고 다시 조립',
-      '이사·재배치 때 번거롭다는 <strong>실사용 의견</strong>이 있음'
+      '상판 아래 <strong>전선이 그대로 노출</strong>되는 구조',
+      '정리하려면 <strong>다리에 부착하는 패드(클립)</strong>를 별도로 설치',
+      '패드는 <strong>설치 시 별도 제공</strong> — 일체형이 아님',
+      '일룸은 <strong>다리 캡으로 공구 없이 손으로 정리</strong>'
     ],
-    note: '※ 공개된 사용 후기에서 확인된 내용을 사실 위주로 정리했습니다.'
+    note: '※ 공개된 제품 사진·후기에서 확인된 내용을 사실 위주로 정리했습니다.'
   },
   livart: {
     eyebrow: 'B사 · 전선 정리',
