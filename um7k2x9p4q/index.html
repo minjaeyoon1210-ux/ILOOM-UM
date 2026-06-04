@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>iloom UPMOTION</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+/* 강조용 폰트 — paybooc (한글·영문·숫자 일관, 매장 디스플레이 임베드) */
+@font-face {
+  font-family: 'Paybooc';
+  src: url('assets/fonts/paybooc-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paybooc';
+  src: url('assets/fonts/paybooc-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paybooc';
+  src: url('assets/fonts/paybooc-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-display: swap;
+}
+/* 디자인 토큰 — 따뜻한 다이닝 무드 (크림·우드·테라코타) */
+:root {
+  --ink: #2E2823;          /* 따뜻한 차콜 (살짝 갈색기) */
+  --ink-soft: #5E544B;     /* 웜 그레이 */
+  --ink-mute: #9A8C7C;     /* 우드 그레이 */
+  --line: #E4DACE;         /* 베이지 라인 */
+  --line-soft: rgba(70, 50, 30, 0.07);
+  --bg: #F6F0E7;           /* 크림 베이스 */
+  --warm-bg: #EFE6D8;      /* 더 진한 크림 (카드/플레이스홀더) */
+  --cream: #FBF6EE;        /* 카드 화이트(크림빛) */
+  --wood: #C9A877;         /* 오크 우드 액센트 */
+  --wood-deep: #A6814F;    /* 진한 우드 */
+  --hot: #C0573C;          /* 테라코타 (기존 빨강을 다이닝 톤으로) */
+  --hot-soft: #D98E76;     /* 연한 테라코타 */
+  --shadow-sm: rgba(90,60,30,0.05) 0 4px 18px, rgba(90,60,30,0.035) 0 2px 8px;
+  --shadow-md: rgba(90,60,30,0.10) 0 10px 34px, rgba(90,60,30,0.05) 0 4px 12px;
+  --shadow-lg: rgba(90,60,30,0.15) 0 20px 54px, rgba(90,60,30,0.07) 0 6px 16px;
+  --font-emph: 'Paybooc', 'Pretendard Variable', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-weight: 400;
+  background: #000;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  word-break: keep-all;
+  letter-spacing: 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 스테이지 — 1920×1080 절대 고정 */
+.stage {
+  position: fixed; inset: 0;
+  background: #000;
+  overflow: hidden;
+}
+.stage-inner {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 1920px; height: 1080px;
+  /* 따뜻한 그라데이션 메쉬 — 우드·테라코타 은은하게 */
+  background:
+    radial-gradient(ellipse 1200px 900px at 12% 8%, rgba(201,168,119,0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 1000px 800px at 92% 88%, rgba(192,87,60,0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 900px 700px at 85% 12%, rgba(217,142,118,0.06) 0%, transparent 50%),
+    var(--bg);
+  overflow: hidden;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(1);
+}
+/* 미세 그레인 텍스처 (종이 질감 — 따뜻한 인쇄물 느낌) */
+.stage-inner::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+/* 슬라이드 베이스 */
+.slides { position: absolute; inset: 0; }
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 56px 64px 150px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+.slide.active .fade-up   { animation: fadeUp 0.9s 0.2s both cubic-bezier(0.4, 0, 0.2, 1); }
+.slide.active .fade-up-2 { animation: fadeUp 0.9s 0.4s both cubic-bezier(0.4, 0, 0.2, 1); }
+.slide.active .fade-up-3 { animation: fadeUp 0.9s 0.6s both cubic-bezier(0.4, 0, 0.2, 1); }
+.slide.active .fade-up-4 { animation: fadeUp 0.9s 0.8s both cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 타이포 */
+.slide-eyebrow {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--hot);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.slide-eyebrow::before {
+  content: "";
+  width: 30px; height: 2px;
+  background: var(--hot);
+  border-radius: 2px;
+}
+.slide-title {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+/* 강조 단어 — paybooc 굵게 + 테라코타 (한글·영문·숫자 일관) */
+.slide-title em {
+  font-family: var(--font-emph);
+  font-style: normal;
+  font-weight: 800;
+  color: var(--hot);
+  letter-spacing: -0.02em;
+}
+
+/* 이미지 placeholder — 따뜻한 베이지/우드 톤 */
+.ph {
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(201,168,119,0.22) 0%, transparent 60%),
+    linear-gradient(135deg, #EFE6D6 0%, #E2D3BC 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--wood-deep);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-align: center;
+  border-radius: 14px;
+  padding: 24px;
+  line-height: 1.5;
+  border: 1px solid rgba(166,129,79,0.18);
+}
+.ph::before {
+  content: "";
+  width: 38px; height: 38px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6'%3E%3Crect x='2.5' y='5' width='19' height='15' rx='2.5'/%3E%3Ccircle cx='12' cy='12.5' r='3.5'/%3E%3Cpath d='M8 5l1.5-2h5L16 5'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6'%3E%3Crect x='2.5' y='5' width='19' height='15' rx='2.5'/%3E%3Ccircle cx='12' cy='12.5' r='3.5'/%3E%3Cpath d='M8 5l1.5-2h5L16 5'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.ph.dark {
+  background: linear-gradient(135deg, #3A3028 0%, #5A4A3A 60%, #7A5E42 100%);
+  color: rgba(255,245,230,0.6);
+  border-color: rgba(255,255,255,0.08);
+}
+.ph.dark::before { opacity: 0.4; }
+
+/* ─────────────────────────────────────────
+   SLIDE 1 · 표지
+   ───────────────────────────────────────── */
+.cover {
+  background: var(--warm-bg);
+  padding: 0;
+  cursor: pointer;
+}
+.cover .cover-bg {
+  position: absolute; inset: 0;
+  border-radius: 0;
+}
+.cover .cover-bg.ph { border-radius: 0; }
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 120px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.cover-title {
+  font-size: 84px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.25);
+}
+.cover-sub {
+  font-size: 30px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.94);
+  margin-top: 18px;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.35);
+}
+.cover-price {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 14px 30px;
+  background: rgba(0,0,0,0.5);
+  border: 1.5px solid rgba(255,255,255,0.55);
+  border-radius: 9999px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.cover-price .label { font-size: 22px; font-weight: 500; color: rgba(255,255,255,0.85); }
+.cover-price .num { font-size: 36px; font-weight: 700; color: var(--hot); letter-spacing: -0.01em; }
+.cover-price .unit { font-size: 22px; font-weight: 500; color: rgba(255,255,255,0.85); }
+.cover-btn {
+  pointer-events: auto;
+  margin-top: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 42px;
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.14);
+  border: 1.5px solid rgba(255,255,255,0.92);
+  border-radius: 9999px;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.cover-btn:hover {
+  background: #FFFFFF;
+  color: var(--ink);
+  transform: scale(1.04);
+}
+.cover-btn .ic { font-size: 20px; }
+
+/* ─────────────────────────────────────────
+   SLIDE 2 · 한눈에
+   ───────────────────────────────────────── */
+.glance {
+  display: flex;
+  gap: 48px;
+  margin-top: 24px;
+  flex: 1;
+  min-height: 0;
+}
+.glance-photo {
+  flex: 0 0 800px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(166,129,79,0.16);
+  position: relative;
+}
+/* 사진 위 따뜻한 색보정 오버레이 — 차가운 회색 배경 보완 */
+.glance-photo::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(201,168,119,0.0) 55%, rgba(166,129,79,0.10) 100%),
+    radial-gradient(ellipse at 70% 20%, rgba(255,240,215,0.12) 0%, transparent 60%);
+  mix-blend-mode: multiply;
+}
+.glance-photo .ph { border-radius: 0; height: 100%; }
+.glance-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.glance-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 2px solid var(--ink);
+}
+.glance-table th, .glance-table td {
+  padding: 22px 16px;
+  text-align: left;
+  font-size: 22px;
+  border-bottom: 1px solid var(--line);
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+.glance-table th {
+  font-weight: 600;
+  color: var(--ink-mute);
+  width: 38%;
+  font-size: 20px;
+}
+.glance-table td {
+  font-weight: 500;
+  color: var(--ink);
+}
+.glance-table tr.price-row th,
+.glance-table tr.price-row td {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--hot);
+  border-bottom: 2px solid var(--hot);
+}
+.glance-table tr.price-row th { font-size: 22px; }
+
+/* ─────────────────────────────────────────
+   SLIDE 3 · 무엇이 바뀌었나 (Before/After)
+   ───────────────────────────────────────── */
+.changes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 22px;
+  margin-top: 36px;
+  flex: 1;
+  min-height: 0;
+}
+.change-item {
+  display: flex;
+  flex-direction: column;
+}
+.change-item-label {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+.change-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+.change-cell {
+  position: relative;
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--warm-bg);
+}
+.change-cell .ph {
+  height: 100%;
+  border-radius: 0;
+  font-size: 17px;
+  padding: 12px;
+}
+.change-cell .ph::before {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+.change-tag {
+  position: absolute;
+  top: 10px; left: 10px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  z-index: 2;
+}
+.change-tag.before { background: rgba(0,0,0,0.65); color: #fff; }
+.change-tag.after { background: var(--hot); color: #fff; }
+.change-item-desc {
+  margin-top: 14px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 4 · 상판
+   ───────────────────────────────────────── */
+.split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-top: 32px;
+  flex: 1;
+  min-height: 0;
+}
+.split-card {
+  background: var(--cream);
+  border-radius: 22px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(166,129,79,0.14);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.split-card-photo {
+  height: 420px;
+}
+.split-card-photo .ph { border-radius: 0; height: 100%; }
+.seq-photo { position: relative; overflow: hidden; }
+.seq-photo .seq-still,
+.seq-photo .seq-motion {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.seq-photo .seq-motion { opacity: 0; }
+.slide.active[data-idx="4"] .seq-photo .seq-still {
+  animation: seqStillOut 0.8s 2.5s forwards;
+}
+.slide.active[data-idx="4"] .seq-photo .seq-motion {
+  animation: seqMotionIn 0.8s 2.5s forwards;
+}
+@keyframes seqStillOut { to { opacity: 0; } }
+@keyframes seqMotionIn { to { opacity: 1; } }
+.split-card-body {
+  padding: 36px 38px 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.split-card-tag {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--hot);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.split-card-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 22px;
+}
+.split-card-price {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.split-card-price em {
+  font-style: normal;
+  color: var(--hot);
+}
+.split-card-desc {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 6 · 매칭 의자
+   ───────────────────────────────────────── */
+.match-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 36px;
+  margin-top: 24px;
+  flex: 1;
+  min-height: 0;
+}
+.match-hero {
+  border-radius: 22px;
+  overflow: hidden;
+}
+.match-hero .ph { border-radius: 0; height: 100%; }
+.match-side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+}
+.match-seats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.match-seat {
+  background: var(--cream);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(166,129,79,0.14);
+  padding: 16px 14px 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.match-seat-photo {
+  height: 160px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.match-seat-photo .ph { border-radius: 0; height: 100%; font-size: 17px; padding: 10px; }
+.match-seat-photo .ph::before { font-size: 32px; margin-bottom: 6px; }
+.match-seat-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+.match-seat-solo {
+  background: var(--cream);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(166,129,79,0.14);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.match-seat-solo .match-seat-photo {
+  height: 280px;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+.match-seat-solo .match-seat-photo.match-seat-lineup {
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+.match-seat-info {
+  padding: 22px 26px 26px;
+}
+.match-seat-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.match-seat-chips {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.match-seat-chips span {
+  background: var(--warm-bg);
+  border: 1px solid rgba(166,129,79,0.2);
+  border-radius: 9999px;
+  padding: 7px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.match-seat-sub {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+}
+.match-guide {
+  background: var(--cream);
+  border: 1px solid rgba(166,129,79,0.14);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  padding: 24px 28px 26px;
+  margin-top: auto;
+}
+.match-guide-title {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--hot);
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+.mg-colors {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.mg-color-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mg-color-label {
+  flex: 0 0 76px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+.mg-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--warm-bg);
+  border: 1px solid rgba(166,129,79,0.2);
+  border-radius: 9999px;
+  padding: 6px 16px 6px 7px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.mg-swatch i {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.12);
+  flex: 0 0 auto;
+}
+.mg-note {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  margin-top: 14px;
+  padding: 13px 16px 13px 18px;
+  background: rgba(192,87,60,0.07);
+  border-radius: 12px;
+  border-left: 4px solid var(--hot);
+}
+.mg-note strong { color: var(--hot); font-weight: 800; }
+
+/* SLIDE4 다리 색칩 (컬러매칭가이드 톤) */
+.leg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 14px;
+}
+.leg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--warm-bg);
+  border: 1px solid rgba(166,129,79,0.2);
+  border-radius: 9999px;
+  padding: 7px 17px 7px 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.leg-chip i {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.14);
+  flex: 0 0 auto;
+}
+.leg-chip-feat {
+  padding: 7px 17px;
+  background: rgba(192,87,60,0.10);
+  border-color: rgba(192,87,60,0.28);
+  color: var(--hot);
+  font-weight: 700;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 7 · 다른 브랜드와 비교
+   ───────────────────────────────────────── */
+.compare-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 24px;
+  flex: 1;
+  min-height: 0;
+}
+.compare-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.35fr;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+.compare-card {
+  background: var(--cream);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(166,129,79,0.14);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0.78;
+  filter: grayscale(0.2);
+  transition: opacity 0.3s, filter 0.3s;
+}
+.compare-card-photo {
+  height: 152px;
+  background: var(--warm-bg);
+  position: relative;
+}
+/* 경쟁사 사진 익명화 — 실루엣(블러) 처리로 제품 특정 방지 */
+.anon-img {
+  filter: blur(7px) brightness(0.96) saturate(0.85);
+  transform: scale(1.06);            /* 블러 가장자리 비침 방지 */
+}
+.anon-tag {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.45);
+  background: rgba(46,40,35,0.18);
+  pointer-events: none;
+}
+.compare-card-photo .ph { border-radius: 0; height: 100%; font-size: 18px; }
+.compare-card-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.compare-card-body {
+  padding: 20px 26px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.compare-card-brand {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink-mute);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.compare-card-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.compare-card-price {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.compare-card-price .price-sub {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-mute);
+  margin-left: 8px;
+  letter-spacing: -0.01em;
+}
+.compare-card-note {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* 비교 카드 안 특징 리스트 (소재·모터·디자인·매칭) */
+.compare-card-specs {
+  list-style: none;
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.compare-card-specs li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  border-bottom: 1px dashed var(--line);
+}
+.compare-card-specs li:last-child { border-bottom: none; }
+.compare-card-specs li .k {
+  color: var(--ink-mute);
+  flex-shrink: 0;
+  font-size: 17px;
+}
+.compare-card-specs li .v {
+  color: var(--ink);
+  font-weight: 600;
+  text-align: right;
+}
+.compare-card-specs li .v .v-note {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-mute);
+  line-height: 1.3;
+  margin-top: 2px;
+  letter-spacing: -0.02em;
+}
+.compare-card.ours .compare-card-specs li .v {
+  color: var(--hot);
+  font-weight: 700;
+}
+.compare-card.ours .compare-card-specs li {
+  font-size: 18px;
+  padding: 5px 0;
+}
+
+/* 일룸 카드 — ORIGINAL 강조 */
+.compare-card.ours {
+  opacity: 1;
+  filter: none;
+  background: #FFFFFF;
+  border: 3px solid var(--hot);
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.04);
+  position: relative;
+  z-index: 2;
+}
+.compare-card.ours .compare-card-photo {
+  height: 162px;
+}
+.compare-card.ours .compare-card-brand {
+  color: var(--hot);
+  font-weight: 700;
+}
+.compare-card.ours .compare-card-name {
+  font-size: 30px;
+}
+.compare-card.ours .compare-card-price {
+  color: var(--hot);
+  font-size: 36px;
+}
+.compare-original-badge {
+  position: absolute;
+  top: 18px; right: 18px;
+  background: var(--hot);
+  color: #fff;
+  padding: 7px 18px;
+  border-radius: 9999px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  z-index: 3;
+  box-shadow: 0 4px 12px rgba(200,74,63,0.35);
+}
+.compare-msg {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  padding: 12px 0;
+}
+.compare-msg em {
+  font-style: normal;
+  color: var(--hot);
+  font-weight: 800;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 8 · 왜 일룸인가 (5카드)
+   ───────────────────────────────────────── */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr 1fr 0.78fr;
+  gap: 20px;
+  margin-top: 22px;
+  flex: 1;
+  min-height: 0;
+}
+.why-card-wide {
+  grid-column: 1 / -1;
+}
+.why-card-wide .why-card-desc {
+  max-width: 78%;
+}
+.why-card {
+  background: var(--cream);
+  border-radius: 22px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(166,129,79,0.14);
+  padding: 34px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.why-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6px;
+  background: var(--hot);
+}
+.why-card-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--hot);
+  letter-spacing: 0.01em;
+  margin-bottom: 13px;
+  background: rgba(192,87,60,0.10);
+  border: 1px solid rgba(192,87,60,0.26);
+  border-radius: 9999px;
+  padding: 5px 15px;
+}
+.why-card-title {
+  font-size: 33px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.why-card-desc {
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+}
+.why-card-desc strong { color: var(--ink); font-weight: 700; }
+
+/* ─────────────────────────────────────────
+   navbar
+   ───────────────────────────────────────── */
+.navbar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 88px;
+  z-index: 10;
+  background: rgba(251,246,238,0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  gap: 24px;
+}
+.nav-brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.nav-brand .accent { color: var(--hot); }
+.nav-progress {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+.nav-prog-item {
+  flex: 1;
+  height: 5px;
+  background: var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.nav-prog-item.done { background: var(--wood-deep); }
+.nav-prog-item.current::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--hot);
+  width: var(--p, 0%);
+  transition: width 0.2s linear;
+}
+.nav-status {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink-mute);
+  letter-spacing: -0.01em;
+  min-width: 120px;
+  text-align: center;
+}
+.nav-pagenum {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  min-width: 86px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.nav-pagenum .total { color: var(--ink-mute); font-weight: 500; }
+.nav-btn {
+  background: transparent;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  padding: 10px 22px;
+  font-size: 19px;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.nav-btn:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+/* 일시정지 버튼 — 눈에 띄게 (테라코타 채움) */
+.nav-pause {
+  background: var(--hot);
+  border-color: var(--hot);
+  color: #fff;
+  font-weight: 700;
+}
+.nav-pause .ic { font-size: 16px; margin-right: 2px; }
+.nav-pause:hover {
+  background: #a8492f;
+  border-color: #a8492f;
+  color: #fff;
+}
+/* 일시정지 상태일 때 = '재생'으로 보이게 (초록빛 강조) */
+.nav-pause.paused {
+  background: #2E2823;
+  border-color: #2E2823;
+  animation: pausePulse 1.6s ease-in-out infinite;
+}
+@keyframes pausePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(192,87,60,0.0); }
+  50% { box-shadow: 0 0 0 6px rgba(192,87,60,0.18); }
+}
+
+/* 일시정지 배지 */
+.pause-badge {
+  position: absolute;
+  top: 28px; left: 28px;
+  z-index: 8;
+  background: rgba(46,40,35,0.92);
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 9999px;
+  font-size: 22px;
+  font-weight: 700;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.01em;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+}
+.pause-badge.visible { display: inline-flex; }
+.pause-badge::before {
+  content: "";
+  width: 8px; height: 8px;
+  background: var(--hot);
+  border-radius: 50%;
+}
+
+/* ── 클릭 상세 모달 (비교표 전선정리 등) ── */
+.compare-card-specs li.clickable {
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.compare-card-specs li.clickable:hover { background: rgba(192,87,60,0.07); }
+.detail-trigger {
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.detail-trigger::after {
+  content: "눌러보기";
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--hot);
+  padding: 2px 9px;
+  border-radius: 9999px;
+  letter-spacing: -0.02em;
+  vertical-align: middle;
+  flex: 0 0 auto;
+  animation: tapHint 1.8s ease-in-out infinite;
+}
+@keyframes tapHint {
+  0%, 100% { transform: scale(1); opacity: 0.92; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+.compare-card-specs li.clickable:hover .detail-trigger::after { background: #a8492f; }
+.detail-modal {
+  position: absolute; inset: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30,22,16,0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.detail-modal.open { display: flex; }
+.detail-box {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  width: 720px;
+  max-width: 80%;
+  padding: 44px 48px 40px;
+  position: relative;
+}
+.detail-box-eyebrow {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--hot);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.detail-box-title {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 22px;
+  line-height: 1.2;
+}
+.detail-box-list { list-style: none; }
+.detail-box-list li {
+  font-size: 21px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  padding: 9px 0 9px 28px;
+  position: relative;
+  border-top: 1px solid var(--line-soft);
+}
+.detail-box-list li:first-child { border-top: none; }
+.detail-box-list li::before {
+  content: "";
+  position: absolute; left: 4px; top: 18px;
+  width: 7px; height: 7px;
+  background: var(--hot);
+  border-radius: 50%;
+}
+.detail-box-list li strong { color: var(--ink); font-weight: 700; }
+.detail-box-note {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--ink-mute);
+  letter-spacing: -0.01em;
+}
+.detail-box-close {
+  position: absolute; top: 18px; right: 22px;
+  width: 38px; height: 38px;
+  border: none; background: transparent;
+  font-size: 28px; color: var(--ink-mute);
+  cursor: pointer; line-height: 1;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.detail-box-close:hover { background: var(--warm-bg); }
+</style>
+</head>
+<body>
+
+<div class="pause-badge" id="pauseBadge">일시정지됨 · 화면을 누르면 계속</div>
+
+<div class="stage">
+  <div class="stage-inner" id="stage">
+    <div class="slides" id="slides">
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 1 · 표지
+         ═══════════════════════════════════════ -->
+    <section class="slide cover active" data-idx="0" onclick="goto(1)">
+      <div class="cover-bg" style="background: url('assets/images/products/new/style-a-16x9-main.png') center/cover no-repeat;"></div>
+      <div class="cover-bg" style="background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.1) 100%);"></div>
+      <div class="cover-overlay">
+        <h1 class="cover-title fade-up">
+          업모션<br>리뉴얼
+        </h1>
+        <p class="cover-sub fade-up-2">2026 상반기 다리·상판 리뉴얼</p>
+        <div class="cover-price fade-up-3">
+          <span class="label">1,600폭 LPM</span>
+          <span class="num">995,000</span>
+          <span class="unit">원부터</span>
+        </div>
+        <button class="cover-btn fade-up-4" onclick="event.stopPropagation(); goto(1);">
+          <span class="ic">▶</span><span>보러 가기</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 2 · 한눈에
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="1">
+      <p class="slide-eyebrow fade-up">한눈에</p>
+      <h2 class="slide-title fade-up-2">업모션 — <em>다이닝 모션 테이블</em></h2>
+
+      <div class="glance fade-up-3">
+        <div class="glance-photo">
+          <img src="assets/images/products/new/style-b-3x4-main2-2.png" alt="업모션 서재형 다이닝 연출 (저녁)" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div class="glance-info">
+          <table class="glance-table">
+            <tr>
+              <th>사용 인원</th>
+              <td>4인 (1,600폭) / 6인 (1,800폭)</td>
+            </tr>
+            <tr>
+              <th>사이즈</th>
+              <td>1,590 × 850 mm / 1,790 × 900 mm</td>
+            </tr>
+            <tr>
+              <th>높이 조절</th>
+              <td>620 ~ 900 mm</td>
+            </tr>
+            <tr>
+              <th>상판</th>
+              <td>LPM / 세라믹</td>
+            </tr>
+            <tr>
+              <th>다리</th>
+              <td>우드 / 블랙</td>
+            </tr>
+            <tr>
+              <th>매칭 의자</th>
+              <td>리모 시리즈</td>
+            </tr>
+            <tr class="price-row">
+              <th>가격</th>
+              <td>995,000 ~ 1,390,000원</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 3 · 무엇이 바뀌었나
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="2">
+      <p class="slide-eyebrow fade-up">리뉴얼</p>
+      <h2 class="slide-title fade-up-2">이렇게 <em>개선했어요</em></h2>
+
+      <div class="changes-grid fade-up-3">
+        <div class="change-item">
+          <div class="change-item-label">전선 정리</div>
+          <div class="change-pair">
+            <div class="change-cell">
+              <img src="assets/images/products/detail-black-leg-cap.jpg" alt="뉴트 다리 캡 하단부" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+          </div>
+          <div class="change-item-desc">뉴트 다리 캡 — 탈착형으로 깔끔한 전선정리</div>
+        </div>
+
+        <div class="change-item">
+          <div class="change-item-label">스위치 위치</div>
+          <div class="change-pair">
+            <div class="change-cell">
+              <img src="assets/images/products/detail-switch.jpg" alt="안쪽 스위치" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+          </div>
+          <div class="change-item-desc">안쪽으로 이동, 무릎 간섭 없이</div>
+        </div>
+
+        <div class="change-item">
+          <div class="change-item-label">마감</div>
+          <div class="change-pair">
+            <div class="change-cell">
+              <img src="assets/images/products/detail-iloom-logo.jpg" alt="깔끔한 마감" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+          </div>
+          <div class="change-item-desc">이음새까지 매끄러운 마감</div>
+        </div>
+
+        <div class="change-item">
+          <div class="change-item-label">콘센트</div>
+          <div class="change-pair">
+            <div class="change-cell">
+              <img src="assets/images/products/detail-multitap-after.jpg" alt="멀티탭 정리" style="width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.85);transform-origin:40% 47%;">
+            </div>
+          </div>
+          <div class="change-item-desc">전원선을 안으로 숨겨 3구 전부 사용</div>
+        </div>
+
+        <div class="change-item">
+          <div class="change-item-label">모서리</div>
+          <div class="change-pair">
+            <div class="change-cell">
+              <img src="assets/images/products/detail-rounded-corner.jpg" alt="부드러운 모서리" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+          </div>
+          <div class="change-item-desc">조약돌 곡선으로 부드럽게</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 4 · 상판
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="3">
+      <p class="slide-eyebrow fade-up">상판</p>
+      <h2 class="slide-title fade-up-2"><em>LPM</em> 또는 <em>세라믹</em></h2>
+
+      <div class="split-grid fade-up-3">
+        <div class="split-card">
+          <div class="split-card-photo">
+            <img src="assets/images/products/new/top-lpm.png" alt="LPM 상판" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <div class="split-card-body">
+            <div class="split-card-tag">LPM</div>
+            <div class="split-card-title">매끄러운 매트 표면</div>
+            <div class="split-card-price"><em>995,000원</em> · 1,050,000원</div>
+            <div class="split-card-desc">페닉스 질감을 살린 이너트코팅<br>지문·자국이 잘 안 묻는 매트 마감</div>
+          </div>
+        </div>
+
+        <div class="split-card">
+          <div class="split-card-photo">
+            <img src="assets/images/products/new/top-ceramic.png" alt="세라믹 상판" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <div class="split-card-body">
+            <div class="split-card-tag">CERAMIC</div>
+            <div class="split-card-title">열·스크래치에 강함</div>
+            <div class="split-card-price"><em>1,290,000원</em> · 1,390,000원</div>
+            <div class="split-card-desc">강화유리 대체 / 1,600폭 사각·타원 / 1,800폭 타원</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 5 · 다리
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="4">
+      <p class="slide-eyebrow fade-up">컬러 · 모션</p>
+      <h2 class="slide-title fade-up-2"><em>우드</em> 또는 <em>블랙</em>, 부드럽게 움직여요</h2>
+
+      <div class="split-grid fade-up-3">
+        <div class="split-card">
+          <div class="split-card-photo seq-photo">
+            <img src="assets/images/products/new/detail-wood-leg-finish.png" alt="우드 다리" class="seq-still">
+            <video src="assets/images/products/new/mov-collision.mp4" autoplay muted loop playsinline class="seq-motion" style="object-position:center 70%;"></video>
+          </div>
+          <div class="split-card-body">
+            <div class="split-card-tag">WOOD · 우드 다리</div>
+            <div class="split-card-title">따뜻한 우드 컬러</div>
+            <div class="leg-chips">
+              <span class="leg-chip"><i style="background:#C9A877;"></i>우드(SP)</span>
+              <span class="leg-chip leg-chip-feat">충돌감지 · 닿으면 멈춤</span>
+            </div>
+            <div class="split-card-desc">다이닝룸에 어울리는 따뜻한 우드 톤. 내려가다 닿으면 자동으로 멈춰요.</div>
+          </div>
+        </div>
+
+        <div class="split-card">
+          <div class="split-card-photo seq-photo">
+            <img src="assets/images/products/new/detail-black-silhouette.png" alt="블랙 다리" class="seq-still">
+            <video src="assets/images/products/new/mov-linak-motor.mp4" autoplay muted loop playsinline class="seq-motion" style="object-position:center 70%;"></video>
+          </div>
+          <div class="split-card-body">
+            <div class="split-card-tag">BLACK · 블랙 다리</div>
+            <div class="split-card-title">모던한 블랙 컬러</div>
+            <div class="leg-chips">
+              <span class="leg-chip"><i style="background:#2A2622;"></i>블랙(BK)</span>
+              <span class="leg-chip leg-chip-feat">듀얼 LINAK 모터</span>
+            </div>
+            <div class="split-card-desc">공간을 잡아주는 모던 블랙 톤. 진동·소음 적게 부드럽게 올라가요.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 6 · 매칭 의자 (리모)
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="5">
+      <p class="slide-eyebrow fade-up">매칭 의자</p>
+      <h2 class="slide-title fade-up-2">리모 — <em>같은 시즌, 잘 어울리는 의자</em></h2>
+
+      <div class="match-layout fade-up-3">
+        <div class="match-hero">
+          <img src="assets/images/products/new/style-b-4x3-main1.png" alt="업모션 + 리모 다이닝 연출" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div class="match-side">
+          <div class="match-seat-solo">
+            <div class="match-seat-photo match-seat-lineup">
+              <img src="assets/images/products/lemo-3seat-lineup.png" alt="리모 의자 좌판 3종 (우드쉘 · 패브릭 · 인조가죽)" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+            <div class="match-seat-info">
+              <div class="match-seat-title">좌판 3종 · 다리 2색</div>
+              <div class="match-seat-chips">
+                <span>우드쉘</span><span>패브릭</span><span>인조가죽</span>
+              </div>
+              <div class="match-seat-sub">크롬 / 블랙 다리 · 테이블 색에 맞춰 매칭</div>
+            </div>
+          </div>
+          <div class="match-guide">
+            <div class="match-guide-title">컬러 매칭 가이드</div>
+            <div class="mg-colors">
+              <div class="mg-color-row">
+                <span class="mg-color-label">좌판 2색</span>
+                <span class="mg-swatch"><i style="background:#2A2622"></i>블랙</span>
+                <span class="mg-swatch"><i style="background:#C9A877"></i>오크(NK)</span>
+              </div>
+              <div class="mg-color-row">
+                <span class="mg-color-label">다리 2색</span>
+                <span class="mg-swatch"><i style="background:linear-gradient(135deg,#D8DBDE,#A9AEB4)"></i>크롬</span>
+                <span class="mg-swatch"><i style="background:#2A2622"></i>블랙</span>
+              </div>
+            </div>
+            <div class="mg-note"><strong>우드쉘</strong> 좌판은 크롬·블랙 <strong>둘 다 OK</strong> · <strong>패브릭/인조가죽</strong>은 등판색 따라 (블랙→블랙, 오크→크롬)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 7 · 왜 일룸인가
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="6">
+      <p class="slide-eyebrow fade-up">왜 일룸인가</p>
+      <h2 class="slide-title fade-up-2">디테일까지, <em>처음부터 식탁으로 만들었어요</em></h2>
+
+      <div class="why-grid fade-up-3">
+        <div class="why-card">
+          <div class="why-card-eyebrow">상판</div>
+          <div class="why-card-title">코팅 업그레이드 LPM · 세라믹</div>
+          <div class="why-card-desc">매트한 촉감 · 지문·잔기스에 강함</div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-eyebrow">모터</div>
+          <div class="why-card-title">모션베드와 같은 LINAK 모터</div>
+          <div class="why-card-desc">글로벌 1위 듀얼 모터 · 좌우 동기화로 조용함</div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-eyebrow">디자인</div>
+          <div class="why-card-title">처음부터 식탁으로 설계</div>
+          <div class="why-card-desc">곡선 모서리 · 숨은 스위치 · 다이닝 톤이 출발점</div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-eyebrow">의자</div>
+          <div class="why-card-title">리모 의자 매칭 추천</div>
+          <div class="why-card-desc">같은 시즌 철제 의자 · 색·다리 매칭 가이드 제공</div>
+        </div>
+
+        <div class="why-card why-card-wide">
+          <div class="why-card-eyebrow">안전</div>
+          <div class="why-card-title">블루투스 앱까지 전부 기본</div>
+          <div class="why-card-desc">충돌감지 · 높이 메모리 · 버튼 잠금 · 앱 조절 — 추가 비용 없이</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SLIDE 8 · 다른 브랜드와 비교
+         ═══════════════════════════════════════ -->
+    <section class="slide" data-idx="7">
+      <p class="slide-eyebrow fade-up">다른 브랜드와 비교</p>
+      <h2 class="slide-title fade-up-2">1600폭 동급, <em>일룸이 가장 잘 만듭니다</em></h2>
+
+      <div class="compare-shell fade-up-3">
+        <div class="compare-cards">
+          <div class="compare-card ours">
+            <span class="compare-original-badge">BEST</span>
+            <div class="compare-card-photo">
+              <img src="assets/images/products/new/style-a-4x3-main.png" alt="업모션 1600 LPM" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+            <div class="compare-card-body">
+              <div class="compare-card-brand">일룸</div>
+              <div class="compare-card-name">업모션 1600 LPM</div>
+              <div class="compare-card-price">995,000원<span class="price-sub">3사 최저</span></div>
+              <ul class="compare-card-specs">
+                <li><span class="k">모터</span><span class="v">듀얼 LINAK(덴마크) ★</span></li>
+                <li><span class="k">하중</span><span class="v">100kg ★</span></li>
+                <li><span class="k">블루투스 앱</span><span class="v">기본 ★</span></li>
+                <li><span class="k">전선 정리</span><span class="v">다리 캡 · 손으로 탈착 ★</span></li>
+                <li><span class="k">의자 매칭</span><span class="v">리모 매칭 추천 ★</span></li>
+                <li><span class="k">상판</span><span class="v">LPM·세라믹 선택 ★</span></li>
+                <li><span class="k">기본 안전기능</span><span class="v">충돌·메모리·잠금</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="compare-card">
+            <div class="compare-card-photo">
+              <img src="assets/images/competitors/hanssem-liveup-1600.png" alt="A사 모션 테이블 1600" class="anon-img" style="width:100%;height:100%;object-fit:cover;display:block;"><span class="anon-tag">A사</span>
+            </div>
+            <div class="compare-card-body">
+              <div class="compare-card-brand">A사</div>
+              <div class="compare-card-name">모션 테이블 1600 LPM</div>
+              <div class="compare-card-price">1,040,000원~<span class="price-sub">목재</span></div>
+              <ul class="compare-card-specs">
+                <li><span class="k">모터</span><span class="v">듀얼 제창 모터</span></li>
+                <li><span class="k">하중</span><span class="v">수치 비공개(2배 강화)</span></li>
+                <li><span class="k">블루투스 앱</span><span class="v">미언급</span></li>
+                <li class="clickable" onclick="event.stopPropagation(); openDetail('hanssem');"><span class="k">전선 정리</span><span class="v detail-trigger">매립형<span class="v-note">분리 시 육각렌치로 커버 열고 재조립</span></span></li>
+                <li><span class="k">의자 매칭</span><span class="v">개별 참고</span></li>
+                <li><span class="k">상판</span><span class="v">LPM·세라믹</span></li>
+                <li><span class="k">기본 안전기능</span><span class="v">충돌·메모리·잠금</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="compare-card">
+            <div class="compare-card-photo">
+              <img src="assets/images/competitors/livart-wemove-21.jpg" alt="B사 모션 테이블 1600" class="anon-img" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.outerHTML='<div class=&quot;ph&quot;>B사<br>제품 사진</div>'"><span class="anon-tag">B사</span>
+            </div>
+            <div class="compare-card-body">
+              <div class="compare-card-brand">B사</div>
+              <div class="compare-card-name">모션 테이블 1600 LPM</div>
+              <div class="compare-card-price">1,398,000원</div>
+              <ul class="compare-card-specs">
+                <li><span class="k">모터</span><span class="v">듀얼 제창 모터</span></li>
+                <li><span class="k">하중</span><span class="v">권장 50kg</span></li>
+                <li><span class="k">블루투스 앱</span><span class="v">리시버 별매(25,000원)</span></li>
+                <li class="clickable" onclick="event.stopPropagation(); openDetail('livart');"><span class="k">전선 정리</span><span class="v detail-trigger">테이블 밑 노출</span></li>
+                <li><span class="k">의자 매칭</span><span class="v">개별 참고</span></li>
+                <li><span class="k">상판</span><span class="v">LPM·세라믹</span></li>
+                <li><span class="k">기본 안전기능</span><span class="v">표기 미확인</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <p class="compare-msg">
+          <em>타사 대비 합리적인 가격</em>에, 모터·앱·의자 매칭까지 일룸이 가장 잘 만듭니다
+        </p>
+      </div>
+    </section>
+
+    </div><!-- /.slides -->
+
+    <!-- ═══════════════════════════════════════
+         navbar
+         ═══════════════════════════════════════ -->
+    <nav class="navbar">
+      <div class="nav-brand">iloom <span class="accent">UPMOTION</span></div>
+      <div class="nav-progress" id="navProgress"></div>
+      <div class="nav-status" id="navStatus">자동 재생</div>
+      <div class="nav-pagenum" id="navPageNum">01 / 08</div>
+      <button class="nav-btn" id="navPrev" onclick="prevSlide()">◀ 이전</button>
+      <button class="nav-btn nav-pause" id="navPause" onclick="event.stopPropagation(); togglePause(); resetAttract();"><span class="ic">⏸</span> 일시정지</button>
+      <button class="nav-btn" id="navNext" onclick="nextSlide()">다음 ▶</button>
+      <button class="nav-btn nav-mute" id="navMute" onclick="event.stopPropagation(); toggleMute();">♪ 소리</button>
+    </nav>
+
+    <audio id="bgm" src="assets/audio/bgm.mp3" loop preload="auto"></audio>
+
+    <!-- 클릭 상세 모달 (사실 요약 — 저작권 안전, 텍스트 재구성) -->
+    <div class="detail-modal" id="detailModal" onclick="if(event.target===this) closeDetail();">
+      <div class="detail-box">
+        <button class="detail-box-close" onclick="closeDetail()" aria-label="닫기">×</button>
+        <div class="detail-box-eyebrow" id="detailEyebrow"></div>
+        <div class="detail-box-title" id="detailTitle"></div>
+        <ul class="detail-box-list" id="detailList"></ul>
+        <p class="detail-box-note" id="detailNote"></p>
+      </div>
+    </div>
+
+  </div><!-- /.stage-inner -->
+</div><!-- /.stage -->
+
+<script>
+/* 스테이지 자동 스케일 */
+function fitStage() {
+  const st = document.getElementById('stage');
+  if (!st) return;
+  const sx = window.innerWidth / 1920;
+  const sy = window.innerHeight / 1080;
+  const s = Math.min(sx, sy);
+  st.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+window.addEventListener('resize', fitStage);
+window.addEventListener('orientationchange', fitStage);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitStage);
+fitStage();
+
+/* 슬라이드 + 자동재생 */
+const SLIDE_COUNT = 8;
+const ATTRACT_TIMEOUT = 60000;
+
+const durations = {
+  0: 10000,  // 표지
+  1: 12000,  // 한눈에
+  2: 22000,  // 무엇이 바뀌었나 (5쌍)
+  3: 14000,  // 상판
+  4: 12000,  // 다리
+  5: 15000,  // 매칭
+  6: 22000,  // 왜 일룸인가 (5카드)
+  7: 18000   // 3사 비교
+};
+
+let curSlide = 0;
+let isPaused = false;
+let advanceTimer = null;
+let progressTimer = null;
+let attractTimer = null;
+let progressStart = 0;
+let progressDur = 10000;
+
+const navProgress = document.getElementById('navProgress');
+for (let i = 0; i < SLIDE_COUNT; i++) {
+  const item = document.createElement('div');
+  item.className = 'nav-prog-item';
+  navProgress.appendChild(item);
+}
+
+function updateNavbar() {
+  document.querySelectorAll('.nav-prog-item').forEach((el, i) => {
+    el.classList.remove('done', 'current');
+    if (i < curSlide) {
+      el.classList.add('done');
+      el.style.setProperty('--p', '100%');
+    } else if (i === curSlide) {
+      el.classList.add('current');
+      el.style.setProperty('--p', '0%');
+    } else {
+      el.style.setProperty('--p', '0%');
+    }
+  });
+  document.getElementById('navPrev').disabled = curSlide === 0;
+  document.getElementById('navNext').disabled = curSlide === SLIDE_COUNT - 1;
+  document.getElementById('navStatus').textContent = isPaused ? '일시정지' : '자동 재생';
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('navPageNum').innerHTML =
+    pad(curSlide + 1) + ' <span class="total">/ ' + pad(SLIDE_COUNT) + '</span>';
+}
+
+function setActive(idx) {
+  if (idx < 0) idx = 0;
+  if (idx >= SLIDE_COUNT) idx = SLIDE_COUNT - 1;
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  const t = document.querySelector('.slide[data-idx="' + idx + '"]');
+  if (t) t.classList.add('active');
+  curSlide = idx;
+  updateNavbar();
+  resetTimers();
+}
+
+function goto(idx) { setActive(idx); }
+function nextSlide() {
+  setActive(curSlide + 1 < SLIDE_COUNT ? curSlide + 1 : 0);
+}
+function prevSlide() {
+  setActive(curSlide - 1 >= 0 ? curSlide - 1 : 0);
+}
+
+function resetTimers() {
+  clearTimeout(advanceTimer);
+  clearInterval(progressTimer);
+  if (isPaused) return;
+  progressDur = durations[curSlide] || 10000;
+  progressStart = Date.now();
+  advanceTimer = setTimeout(() => nextSlide(), progressDur);
+  progressTimer = setInterval(updateProgressBar, 60);
+}
+
+function updateProgressBar() {
+  if (isPaused) return;
+  const el = document.querySelector('.nav-prog-item.current');
+  if (!el) return;
+  const elapsed = Date.now() - progressStart;
+  const ratio = Math.min(1, elapsed / progressDur);
+  el.style.setProperty('--p', (ratio * 100) + '%');
+}
+
+/* 일시정지 */
+const pauseBadge = document.getElementById('pauseBadge');
+const navPause = document.getElementById('navPause');
+function pauseShow() {
+  isPaused = true;
+  clearTimeout(advanceTimer);
+  clearInterval(progressTimer);
+  pauseBadge.classList.add('visible');
+  if (navPause) { navPause.innerHTML = '<span class="ic">▶</span> 재생'; navPause.classList.add('paused'); }
+  updateNavbar();
+}
+function resumeShow() {
+  isPaused = false;
+  pauseBadge.classList.remove('visible');
+  if (navPause) { navPause.innerHTML = '<span class="ic">⏸</span> 일시정지'; navPause.classList.remove('paused'); }
+  resetTimers();
+  updateNavbar();
+}
+function togglePause() {
+  if (isPaused) resumeShow();
+  else pauseShow();
+}
+
+/* 키보드 */
+document.addEventListener('keydown', (e) => {
+  startBgm();
+  if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); resetAttract(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); resetAttract(); }
+  else if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); togglePause(); resetAttract(); }
+});
+
+/* 빈 공간 클릭 = 토글 — 어떤 첫 클릭이든 BGM 시작 (정책 우회) */
+document.addEventListener('click', (e) => {
+  startBgm();
+  if (e.target.closest('.navbar')) return;
+  if (e.target.closest('.cover')) return;
+  if (e.target.closest('.cover-btn')) return;
+  togglePause();
+  resetAttract();
+});
+
+/* 60초 무개입 → 표지 복귀 */
+function resetAttract() {
+  clearTimeout(attractTimer);
+  attractTimer = setTimeout(() => setActive(0), ATTRACT_TIMEOUT);
+}
+
+/* ── 배경음악 (BGM) ── 잔잔하게 깔리는 분위기용 */
+const bgm = document.getElementById('bgm');
+const navMute = document.getElementById('navMute');
+const BGM_VOL = 0.22;          // 목표 볼륨 (잔잔하게)
+let bgmStarted = false;
+let bgmMuted = false;
+
+/* 첫 사용자 상호작용에 재생 시작 (브라우저 자동재생 정책 우회) + 0→목표 페이드인 */
+function startBgm() {
+  if (bgmStarted || bgmMuted || !bgm) return;
+  bgm.volume = 0;
+  bgm.play().then(() => {
+    bgmStarted = true;
+    let v = 0;
+    const ramp = setInterval(() => {
+      v += 0.02;
+      if (v >= BGM_VOL) { v = BGM_VOL; clearInterval(ramp); }
+      bgm.volume = bgmMuted ? 0 : v;
+    }, 60);                    // 약 0.66초에 걸쳐 페이드인
+  }).catch(() => {});          // 정책상 막히면 다음 클릭에 재시도
+}
+
+/* navbar 음소거 토글 */
+function toggleMute() {
+  bgmMuted = !bgmMuted;
+  if (bgm) bgm.muted = bgmMuted;
+  if (navMute) navMute.textContent = bgmMuted ? '🔇 음소거' : '♪ 소리';
+  if (!bgmMuted && !bgmStarted) startBgm();   // 음소거 해제 시 아직 시작 안 했으면 시작
+}
+
+/* ── 클릭 상세 모달 (사실 요약 — 저작권 안전, 타사 캡처 미사용) ── */
+const DETAIL_DATA = {
+  hanssem: {
+    eyebrow: 'A사 · 전선 정리',
+    title: '매립형이라, 전선 한 번 빼면 분해가 필요해요',
+    list: [
+      '전선이 다리 <strong>내부 매립형</strong>으로 들어가는 구조',
+      '높이를 낮출 때 전선이 짧으면 <strong>다시 빼야</strong> 하는 경우가 생김',
+      '재연결하려면 <strong>육각렌치로 커버를 분리</strong>한 뒤 끼우고 다시 조립',
+      '이사·재배치 때 번거롭다는 <strong>실사용 의견</strong>이 있음'
+    ],
+    note: '※ 공개된 사용 후기에서 확인된 내용을 사실 위주로 정리했습니다.'
+  },
+  livart: {
+    eyebrow: 'B사 · 전선 정리',
+    title: '전선이 테이블 밑으로 노출돼요',
+    list: [
+      '전원선이 상판 아래에 <strong>그대로 노출</strong>되는 구조',
+      '별도 전선 정리 캡·홀더 <strong>표기가 확인되지 않음</strong>',
+      '블루투스도 <strong>리시버 별매(25,000원)</strong>라 추가 비용 발생'
+    ],
+    note: '※ 제품 상세·공개 정보에서 확인된 내용을 사실 위주로 정리했습니다.'
+  }
+};
+const detailModal = document.getElementById('detailModal');
+function openDetail(key) {
+  const d = DETAIL_DATA[key];
+  if (!d) return;
+  document.getElementById('detailEyebrow').textContent = d.eyebrow;
+  document.getElementById('detailTitle').textContent = d.title;
+  document.getElementById('detailList').innerHTML = d.list.map(t => '<li>' + t + '</li>').join('');
+  document.getElementById('detailNote').textContent = d.note;
+  detailModal.classList.add('open');
+  if (!isPaused) pauseShow();   // 모달 보는 동안 자동전환 멈춤
+  resetAttract();
+}
+function closeDetail() {
+  detailModal.classList.remove('open');
+  resetAttract();
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDetail(); });
+
+/* 초기화 */
+setActive(0);
+resetAttract();
+</script>
+
+</body>
+</html>
