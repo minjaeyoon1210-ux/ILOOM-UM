@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1920,initial-scale=1">
-<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="googlebot" content="noindex, nofollow">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet">
 <title>iloom UPMOTION</title>
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -654,6 +654,71 @@ html, body {
 }
 .mg-note strong { color: var(--hot); font-weight: 800; }
 
+/* SLIDE6 매칭 시리즈 단품 그리드 (2×2) */
+.match-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.match-item {
+  background: var(--cream);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(166,129,79,0.14);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.match-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.match-item-photo {
+  height: 148px;
+  background: #EDEDED;
+  overflow: hidden;
+  position: relative;
+}
+.match-item-photo::after {
+  content: "＋ 눌러서 크게";
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(192,87,60,0.88);
+  padding: 4px 9px;
+  border-radius: 9999px;
+  letter-spacing: -0.01em;
+  pointer-events: none;
+}
+.match-item-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.match-item-body {
+  padding: 11px 14px 13px;
+  text-align: center;
+}
+.match-item-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+.match-item-type {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+  margin-top: 3px;
+}
+
 /* SLIDE4 다리 색칩 (컬러매칭가이드 톤) */
 .leg-chips {
   display: flex;
@@ -688,6 +753,45 @@ html, body {
   font-weight: 700;
 }
 
+/* 공통기능 바 — 색상·사양 무관 공통임을 명확히 */
+.common-bar {
+  margin-top: 26px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: var(--cream);
+  border: 1px solid rgba(166,129,79,0.18);
+  border-radius: 16px;
+  padding: 20px 28px;
+  box-shadow: var(--shadow-sm);
+}
+.common-bar-label {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--hot);
+  letter-spacing: -0.01em;
+  padding-right: 18px;
+  border-right: 2px solid rgba(192,87,60,0.25);
+  margin-right: 4px;
+  flex: 0 0 auto;
+}
+.common-bar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.common-bar-item::before {
+  content: "✓";
+  color: var(--hot);
+  font-weight: 800;
+  font-size: 17px;
+}
+
 /* ─────────────────────────────────────────
    SLIDE 7 · 다른 브랜드와 비교
    ───────────────────────────────────────── */
@@ -701,7 +805,7 @@ html, body {
 }
 .compare-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.35fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 24px;
   flex: 1;
   min-height: 0;
@@ -717,10 +821,19 @@ html, body {
   overflow: hidden;
   opacity: 0.78;
   filter: grayscale(0.2);
-  transition: opacity 0.3s, filter 0.3s;
+  transition: opacity 0.3s, filter 0.3s, transform 0.25s ease, box-shadow 0.25s ease;
+  transform: scale(1);
+}
+/* 카드 위에 커서 올리면 확대 + 선명 */
+.compare-card:hover {
+  opacity: 1;
+  filter: grayscale(0);
+  transform: scale(1.06);
+  box-shadow: var(--shadow-lg);
+  z-index: 5;
 }
 .compare-card-photo {
-  height: 128px;
+  height: 80px;
   background: var(--warm-bg);
   position: relative;
 }
@@ -748,7 +861,7 @@ html, body {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .compare-card-body {
-  padding: 16px 26px 16px;
+  padding: 12px 24px 12px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -801,18 +914,18 @@ html, body {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  padding: 4px 0;
-  font-size: 17px;
+  padding: 4.5px 0;
+  font-size: 21px;
   font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
   border-bottom: 1px dashed var(--line);
 }
 .compare-card-specs li:last-child { border-bottom: none; }
 .compare-card-specs li .k {
   color: var(--ink-mute);
   flex-shrink: 0;
-  font-size: 17px;
+  font-size: 21px;
 }
 .compare-card-specs li .v {
   color: var(--ink);
@@ -821,7 +934,7 @@ html, body {
 }
 .compare-card-specs li .v .v-note {
   display: block;
-  font-size: 12.5px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--ink-mute);
   line-height: 1.3;
@@ -833,23 +946,25 @@ html, body {
   font-weight: 700;
 }
 .compare-card.ours .compare-card-specs li {
-  font-size: 17px;
-  padding: 4px 0;
+  font-size: 21px;
+  padding: 4.5px 0;
 }
 
-/* 일룸 카드 — ORIGINAL 강조 */
+/* 일룸 카드 — ORIGINAL 강조 (간격 균등 위해 scale 제거, 테두리·그림자로만 강조) */
 .compare-card.ours {
   opacity: 1;
   filter: none;
   background: #FFFFFF;
   border: 3px solid var(--hot);
   box-shadow: var(--shadow-lg);
-  transform: scale(1.04);
   position: relative;
   z-index: 2;
 }
+.compare-card.ours:hover {
+  transform: scale(1.06);
+}
 .compare-card.ours .compare-card-photo {
-  height: 138px;
+  height: 80px;
 }
 .compare-card.ours .compare-card-brand {
   color: var(--hot);
@@ -1139,6 +1254,94 @@ html, body {
   50% { transform: scale(1.08); opacity: 1; }
 }
 .compare-card-specs li.clickable:hover .detail-trigger::after { background: #a8492f; }
+/* 매칭 제품 이미지 갤러리 모달 */
+.gallery-modal {
+  position: absolute; inset: 0;
+  z-index: 32;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30,22,16,0.62);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+.gallery-modal.open { display: flex; }
+.gallery-box {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  width: 1020px;
+  max-width: 84%;
+  padding: 36px 40px 34px;
+  position: relative;
+}
+.gallery-box-close {
+  position: absolute;
+  top: 20px; right: 24px;
+  width: 44px; height: 44px;
+  border: none;
+  background: rgba(46,40,35,0.08);
+  border-radius: 50%;
+  font-size: 28px;
+  color: var(--ink);
+  cursor: pointer;
+  line-height: 1;
+}
+.gallery-box-close:hover { background: rgba(46,40,35,0.16); }
+.gallery-box-eyebrow {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--hot);
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+.gallery-box-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.gallery-box-sub {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+  margin-bottom: 22px;
+}
+.gallery-main {
+  height: 460px;
+  background: #EDEDED;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-main img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.gallery-thumbs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.gallery-thumb {
+  width: 110px; height: 84px;
+  background: #EDEDED;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+.gallery-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.gallery-thumb.active { border-color: var(--hot); }
+
 .detail-modal {
   position: absolute; inset: 0;
   z-index: 30;
@@ -1275,8 +1478,8 @@ html, body {
               <td>우드 / 블랙</td>
             </tr>
             <tr>
-              <th>매칭 의자</th>
-              <td>리모 시리즈</td>
+              <th>매칭 코디</th>
+              <td>의자 · 소파 · 벤치</td>
             </tr>
             <tr class="price-row">
               <th>가격</th>
@@ -1316,13 +1519,13 @@ html, body {
         </div>
 
         <div class="change-item">
-          <div class="change-item-label">마감</div>
+          <div class="change-item-label">컬럼홀더</div>
           <div class="change-pair">
             <div class="change-cell">
-              <img src="assets/images/products/detail-iloom-logo.jpg" alt="깔끔한 마감" style="width:100%;height:100%;object-fit:cover;display:block;">
+              <img src="assets/images/products/detail-column-holder-v2.jpg" alt="컬럼홀더 연결부" style="width:100%;height:100%;object-fit:cover;display:block;object-position:center 46%;">
             </div>
           </div>
-          <div class="change-item-desc">이음새까지 매끄러운 마감</div>
+          <div class="change-item-desc">다리·상판 연결부, 이음새까지 매끄러운 마감</div>
         </div>
 
         <div class="change-item">
@@ -1361,9 +1564,9 @@ html, body {
           </div>
           <div class="split-card-body">
             <div class="split-card-tag">LPM</div>
-            <div class="split-card-title">매끄러운 매트 표면</div>
+            <div class="split-card-title">페닉스 감성의 매트 질감</div>
             <div class="split-card-price"><em>995,000원</em> · 1,050,000원</div>
-            <div class="split-card-desc">페닉스 질감을 살린 이너트코팅<br>지문·자국이 잘 안 묻는 매트 마감</div>
+            <div class="split-card-desc">페닉스 같은 매트한 촉감을 살린 마감</div>
           </div>
         </div>
 
@@ -1399,9 +1602,8 @@ html, body {
             <div class="split-card-title">따뜻한 우드 컬러</div>
             <div class="leg-chips">
               <span class="leg-chip"><i style="background:#C9A877;"></i>우드(SP)</span>
-              <span class="leg-chip leg-chip-feat">충돌감지 · 닿으면 멈춤</span>
             </div>
-            <div class="split-card-desc">다이닝룸에 어울리는 따뜻한 우드 톤. 내려가다 닿으면 자동으로 멈춰요.</div>
+            <div class="split-card-desc">다이닝룸에 어울리는 따뜻한 우드 톤.</div>
           </div>
         </div>
 
@@ -1415,40 +1617,65 @@ html, body {
             <div class="split-card-title">모던한 블랙 컬러</div>
             <div class="leg-chips">
               <span class="leg-chip"><i style="background:#2A2622;"></i>블랙(BK)</span>
-              <span class="leg-chip leg-chip-feat">듀얼 LINAK 모터</span>
             </div>
-            <div class="split-card-desc">공간을 잡아주는 모던 블랙 톤. 진동·소음 적게 부드럽게 올라가요.</div>
+            <div class="split-card-desc">공간을 잡아주는 모던 블랙 톤.</div>
           </div>
         </div>
+      </div>
+
+      <div class="common-bar fade-up-4">
+        <span class="common-bar-label">모든 사양 공통</span>
+        <span class="common-bar-item">듀얼 LINAK 모터</span>
+        <span class="common-bar-item">충돌 감지 · 닿으면 멈춤</span>
+        <span class="common-bar-item">블루투스 앱 · 높이 메모리</span>
+        <span class="common-bar-item">좌우 동기화 안정 동작</span>
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════
-         SLIDE 6 · 매칭 의자 (리모)
+         SLIDE 6 · 매칭 코디 (의자·소파·벤치)
          ═══════════════════════════════════════ -->
     <section class="slide" data-idx="5">
-      <p class="slide-eyebrow fade-up">매칭 의자</p>
-      <h2 class="slide-title fade-up-2">리모 — <em>같은 시즌, 잘 어울리는 의자</em></h2>
+      <p class="slide-eyebrow fade-up">매칭 코디</p>
+      <h2 class="slide-title fade-up-2">의자부터 소파·벤치까지 <em>다양하게 매칭</em></h2>
 
       <div class="match-layout fade-up-3">
         <div class="match-hero">
-          <img src="assets/images/products/new/style-b-4x3-main1.png" alt="업모션 + 리모 다이닝 연출" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <img src="assets/images/products/new/style-b-4x3-main1.png" alt="업모션 다이닝 연출" style="width:100%;height:100%;object-fit:cover;display:block;">
         </div>
         <div class="match-side">
-          <div class="match-seat-solo">
-            <div class="match-seat-photo match-seat-lineup">
-              <img src="assets/images/products/lemo-3seat-lineup.png" alt="리모 의자 좌판 3종 (우드쉘 · 패브릭 · 인조가죽)" style="width:100%;height:100%;object-fit:cover;display:block;">
-            </div>
-            <div class="match-seat-info">
-              <div class="match-seat-title">좌판 3종 · 다리 2색</div>
-              <div class="match-seat-chips">
-                <span>우드쉘</span><span>패브릭</span><span>인조가죽</span>
+          <div class="match-grid">
+            <div class="match-item" onclick="event.stopPropagation(); openGallery('lemo');">
+              <div class="match-item-photo"><img src="assets/images/products/matching/lemo-chair.jpg" alt="리모 의자"></div>
+              <div class="match-item-body">
+                <div class="match-item-name">리모</div>
+                <div class="match-item-type">다이닝 체어 · 좌판 3종</div>
               </div>
-              <div class="match-seat-sub">크롬 / 블랙 다리 · 테이블 색에 맞춰 매칭</div>
+            </div>
+            <div class="match-item" onclick="event.stopPropagation(); openGallery('annatural');">
+              <div class="match-item-photo"><img src="assets/images/products/matching/annatural-chair.png" alt="앤 내추럴 의자"></div>
+              <div class="match-item-body">
+                <div class="match-item-name">앤 내추럴</div>
+                <div class="match-item-type">다이닝 체어 · 원목 다리</div>
+              </div>
+            </div>
+            <div class="match-item" onclick="event.stopPropagation(); openGallery('around');">
+              <div class="match-item-photo"><img src="assets/images/products/matching/around-sofa-2seat.jpg" alt="어라운드 소파"></div>
+              <div class="match-item-body">
+                <div class="match-item-name">어라운드</div>
+                <div class="match-item-type">소파 · 리빙다이닝 연출</div>
+              </div>
+            </div>
+            <div class="match-item" onclick="event.stopPropagation(); openGallery('plante');">
+              <div class="match-item-photo"><img src="assets/images/products/matching/plante-bench-nro.png" alt="플란테 벤치"></div>
+              <div class="match-item-body">
+                <div class="match-item-name">플란테</div>
+                <div class="match-item-type">벤치 · 1600폭 매칭</div>
+              </div>
             </div>
           </div>
           <div class="match-guide">
-            <div class="match-guide-title">컬러 매칭 가이드</div>
+            <div class="match-guide-title">리모 컬러 매칭 가이드</div>
             <div class="mg-colors">
               <div class="mg-color-row">
                 <span class="mg-color-label">좌판 2색</span>
@@ -1472,31 +1699,31 @@ html, body {
          ═══════════════════════════════════════ -->
     <section class="slide" data-idx="6">
       <p class="slide-eyebrow fade-up">왜 일룸인가</p>
-      <h2 class="slide-title fade-up-2">디테일까지, <em>처음부터 식탁으로 만들었어요</em></h2>
+      <h2 class="slide-title fade-up-2">사용자 행동을 고려한 <em>디테일</em></h2>
 
       <div class="why-grid fade-up-3">
         <div class="why-card">
           <div class="why-card-eyebrow">상판</div>
           <div class="why-card-title">코팅 업그레이드 LPM · 세라믹</div>
-          <div class="why-card-desc">매트한 촉감 · 지문·잔기스에 강함</div>
+          <div class="why-card-desc">페닉스 감성의 매트한 촉감 · 세라믹 선택 가능</div>
         </div>
 
         <div class="why-card">
           <div class="why-card-eyebrow">모터</div>
           <div class="why-card-title">모션베드와 같은 LINAK 모터</div>
-          <div class="why-card-desc">글로벌 1위 듀얼 모터 · 좌우 동기화로 조용함</div>
+          <div class="why-card-desc">글로벌 1위 듀얼 모터 · 좌우 동기화로 안정적</div>
         </div>
 
         <div class="why-card">
           <div class="why-card-eyebrow">디자인</div>
-          <div class="why-card-title">처음부터 식탁으로 설계</div>
-          <div class="why-card-desc">곡선 모서리 · 숨은 스위치 · 다이닝 톤이 출발점</div>
+          <div class="why-card-title">사용자 행동 고려한 디테일</div>
+          <div class="why-card-desc">곡선 모서리 · 무릎 안 닿는 숨은 스위치 · 깔끔한 전선 정리</div>
         </div>
 
         <div class="why-card">
-          <div class="why-card-eyebrow">의자</div>
-          <div class="why-card-title">리모 의자 매칭 추천</div>
-          <div class="why-card-desc">같은 시즌 철제 의자 · 색·다리 매칭 가이드 제공</div>
+          <div class="why-card-eyebrow">매칭</div>
+          <div class="why-card-title">의자·소파·벤치 매칭</div>
+          <div class="why-card-desc">리모·앤내추럴·어라운드·플란테 · 색 매칭 가이드 제공</div>
         </div>
 
         <div class="why-card why-card-wide">
@@ -1523,8 +1750,8 @@ html, body {
             </div>
             <div class="compare-card-body">
               <div class="compare-card-brand">일룸</div>
-              <div class="compare-card-name">업모션 1600 LPM</div>
-              <div class="compare-card-price">995,000원<span class="price-sub">3사 최저</span></div>
+              <div class="compare-card-name">업모션 1600 세라믹</div>
+              <div class="compare-card-price">1,290,000원<span class="price-sub">3사 최저</span></div>
               <ul class="compare-card-specs">
                 <li><span class="k">모터</span><span class="v">듀얼 LINAK(덴마크) ★</span></li>
                 <li><span class="k">하중</span><span class="v">100kg ★</span></li>
@@ -1532,8 +1759,8 @@ html, body {
                 <li><span class="k">전선 정리</span><span class="v">다리 캡 · 손으로 탈착 ★</span></li>
                 <li class="clickable" onclick="event.stopPropagation(); openDetail('iloomOutlet');"><span class="k">콘센트</span><span class="v detail-trigger">3구 전부 사용 ★</span></li>
                 <li><span class="k">다리 사이</span><span class="v">발판 없음 · 자유 ★</span></li>
-                <li><span class="k">의자 매칭</span><span class="v">리모 매칭 추천 ★</span></li>
-                <li><span class="k">상판</span><span class="v">LPM·세라믹 선택 ★</span></li>
+                <li><span class="k">의자 매칭</span><span class="v">의자·소파·벤치 매칭 ★</span></li>
+                <li><span class="k">상판</span><span class="v">세라믹 (LPM도 선택) ★</span></li>
                 <li><span class="k">기본 안전기능</span><span class="v">충돌·메모리·잠금</span></li>
               </ul>
             </div>
@@ -1545,8 +1772,8 @@ html, body {
             </div>
             <div class="compare-card-body">
               <div class="compare-card-brand">A사</div>
-              <div class="compare-card-name">모션 테이블 1600 LPM</div>
-              <div class="compare-card-price">1,040,000원~<span class="price-sub">목재</span></div>
+              <div class="compare-card-name">모션 테이블 1600 세라믹</div>
+              <div class="compare-card-price">1,320,000원<span class="price-sub">세라믹</span></div>
               <ul class="compare-card-specs">
                 <li><span class="k">모터</span><span class="v">듀얼 제창 모터</span></li>
                 <li class="clickable" onclick="event.stopPropagation(); openDetail('hanssemLoad');"><span class="k">하중</span><span class="v detail-trigger">60kg<span class="v-note">제한하중 · 그 이상 비권장</span></span></li>
@@ -1567,8 +1794,8 @@ html, body {
             </div>
             <div class="compare-card-body">
               <div class="compare-card-brand">B사</div>
-              <div class="compare-card-name">모션 테이블 1600 LPM</div>
-              <div class="compare-card-price">1,398,000원</div>
+              <div class="compare-card-name">모션 테이블 1600 세라믹</div>
+              <div class="compare-card-price">1,930,000원</div>
               <ul class="compare-card-specs">
                 <li><span class="k">모터</span><span class="v">듀얼 제창 모터</span></li>
                 <li><span class="k">하중</span><span class="v">권장 50kg</span></li>
@@ -1578,7 +1805,7 @@ html, body {
                 <li><span class="k">다리 사이</span><span class="v">발판 없음 · 자유</span></li>
                 <li><span class="k">의자 매칭</span><span class="v">개별 참고</span></li>
                 <li><span class="k">상판</span><span class="v">LPM+MDF · 세라믹</span></li>
-                <li><span class="k">기본 안전기능</span><span class="v">표기 미확인</span></li>
+                <li><span class="k">기본 안전기능</span><span class="v">충돌·차일드락</span></li>
               </ul>
             </div>
           </div>
@@ -1616,6 +1843,18 @@ html, body {
         <div class="detail-box-title" id="detailTitle"></div>
         <ul class="detail-box-list" id="detailList"></ul>
         <p class="detail-box-note" id="detailNote"></p>
+      </div>
+    </div>
+
+    <!-- 매칭 제품 이미지 갤러리 모달 -->
+    <div class="gallery-modal" id="galleryModal" onclick="if(event.target===this) closeGallery();">
+      <div class="gallery-box">
+        <button class="gallery-box-close" onclick="closeGallery()" aria-label="닫기">×</button>
+        <div class="gallery-box-eyebrow" id="galleryEyebrow"></div>
+        <div class="gallery-box-title" id="galleryTitle"></div>
+        <div class="gallery-box-sub" id="gallerySub"></div>
+        <div class="gallery-main"><img id="galleryMainImg" alt=""></div>
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
       </div>
     </div>
 
@@ -1762,6 +2001,7 @@ function pauseShow() {
   isPaused = true;
   clearTimeout(advanceTimer);
   clearInterval(progressTimer);
+  clearTimeout(attractTimer);   // 일시정지 시 표지 자동복귀 타이머도 정지
   pauseBadge.classList.add('visible');
   if (navPause) { navPause.innerHTML = '<span class="ic">▶</span> 재생'; navPause.classList.add('paused'); }
   updateNavbar();
@@ -1796,9 +2036,10 @@ document.addEventListener('click', (e) => {
   resetAttract();
 });
 
-/* 60초 무개입 → 표지 복귀 */
+/* 60초 무개입 → 표지 복귀 (단, 일시정지 중엔 표지 복귀도 멈춤) */
 function resetAttract() {
   clearTimeout(attractTimer);
+  if (isPaused) return;   // 일시정지면 자동 표지복귀 안 함 (멈춤 = 완전 정지)
   attractTimer = setTimeout(() => setActive(0), ATTRACT_TIMEOUT);
 }
 
@@ -1915,6 +2156,75 @@ function closeDetail() {
   resetAttract();
 }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDetail(); });
+
+/* 매칭 제품 이미지 갤러리 */
+const GALLERY_DATA = {
+  lemo: {
+    eyebrow: '다이닝 체어', title: '리모', sub: '좌판 3종 · 다리 크롬/블랙 · 테이블 색에 맞춰 매칭',
+    imgs: [
+      'assets/images/products/matching/lemo-chair.jpg',
+      'assets/images/products/lemo-3seat-lineup.png',
+    ],
+  },
+  annatural: {
+    eyebrow: '다이닝 체어', title: '앤 내추럴', sub: '패브릭 쉘 + 원목 다리 · 따뜻한 다이닝 무드',
+    imgs: [
+      'assets/images/products/matching/annatural-chair.png',
+      'assets/images/products/matching/gallery/annatural-life1.jpg',
+    ],
+  },
+  around: {
+    eyebrow: '소파', title: '어라운드', sub: '가족 중심 리빙다이닝 · 패브릭/가죽 마감',
+    imgs: [
+      'assets/images/products/matching/around-sofa-2seat.jpg',
+      'assets/images/products/matching/around-sofa-fabric.jpg',
+      'assets/images/products/matching/around-sofa-leather.jpg',
+    ],
+  },
+  plante: {
+    eyebrow: '벤치 · 선반장', title: '플란테', sub: '1600폭 테이블과 매칭 · 레드오크/블랙',
+    imgs: [
+      'assets/images/products/matching/plante-bench-nro.png',
+    ],
+  },
+};
+const galleryModal = document.getElementById('galleryModal');
+function openGallery(key) {
+  const g = GALLERY_DATA[key];
+  if (!g) return;
+  document.getElementById('galleryEyebrow').textContent = g.eyebrow;
+  document.getElementById('galleryTitle').textContent = g.title;
+  document.getElementById('gallerySub').textContent = g.sub;
+  const mainImg = document.getElementById('galleryMainImg');
+  mainImg.src = g.imgs[0];
+  mainImg.alt = g.title;
+  const thumbs = document.getElementById('galleryThumbs');
+  if (g.imgs.length > 1) {
+    thumbs.style.display = 'flex';
+    thumbs.innerHTML = g.imgs.map((src, i) =>
+      '<div class="gallery-thumb' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation(); selectGalleryImg(' + i + ', this);"><img src="' + src + '" alt=""></div>'
+    ).join('');
+  } else {
+    thumbs.style.display = 'none';
+    thumbs.innerHTML = '';
+  }
+  galleryModal._imgs = g.imgs;
+  galleryModal.classList.add('open');
+  if (!isPaused) pauseShow();
+  resetAttract();
+}
+function selectGalleryImg(i, thumbEl) {
+  const imgs = galleryModal._imgs || [];
+  if (!imgs[i]) return;
+  document.getElementById('galleryMainImg').src = imgs[i];
+  document.querySelectorAll('#galleryThumbs .gallery-thumb').forEach(t => t.classList.remove('active'));
+  if (thumbEl) thumbEl.classList.add('active');
+}
+function closeGallery() {
+  galleryModal.classList.remove('open');
+  resetAttract();
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGallery(); });
 
 /* 초기화 */
 setActive(0);
